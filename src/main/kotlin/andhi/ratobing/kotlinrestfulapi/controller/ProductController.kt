@@ -1,9 +1,6 @@
 package andhi.ratobing.kotlinrestfulapi.controller
 
-import andhi.ratobing.kotlinrestfulapi.model.CreateProductRequest
-import andhi.ratobing.kotlinrestfulapi.model.ProductResponse
-import andhi.ratobing.kotlinrestfulapi.model.UpdateProductRequest
-import andhi.ratobing.kotlinrestfulapi.model.WebResponse
+import andhi.ratobing.kotlinrestfulapi.model.*
 import andhi.ratobing.kotlinrestfulapi.service.ProductService
 import org.springframework.web.bind.annotation.*
 
@@ -26,11 +23,11 @@ class ProductController(val productService: ProductService) {
     }
 
     @GetMapping(
-        value = ["/api/products/{idProduct}"],
+        value = ["/api/products/{id_product}"],
         produces = ["application/json"]
     )
 
-    fun getProduct(@PathVariable("idProduct") id: String): WebResponse<ProductResponse>{
+    fun getProduct(@PathVariable("id_product") id: String): WebResponse<ProductResponse>{
         val productResponse = productService.get(id)
         return WebResponse(
             code = 200,
@@ -41,11 +38,11 @@ class ProductController(val productService: ProductService) {
 
 
     @PutMapping(
-        value = ["/api/products/{idProduct}"],
+        value = ["/api/products/{id_product}"],
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    fun updateProduct(@PathVariable("idProduct")id: String,
+    fun updateProduct(@PathVariable("id_product")id: String,
                       @RequestBody updateProductRequest: UpdateProductRequest) : WebResponse<ProductResponse>{
 
         val productResponse = productService.update(id, updateProductRequest)
@@ -53,6 +50,38 @@ class ProductController(val productService: ProductService) {
             code = 200,
             status = "OK",
             data = productResponse
+        )
+    }
+
+
+    @DeleteMapping(
+        value = ["/api/products/{id_product}"]
+    )
+    fun delete(@PathVariable("id_product") id: String) : WebResponse<String>{
+        productService.delete(id)
+        return WebResponse(
+            code = 200,
+            status = "OK",
+            data = id
+        )
+    }
+
+
+    @GetMapping(
+        value = ["/api/products"],
+        produces = ["application/json"]
+    )
+    fun listProducts(
+        @RequestParam(value = "size", defaultValue = "10") size: Int,
+        @RequestParam(value = "size", defaultValue = "0") page: Int): WebResponse<List<ProductResponse>>{
+
+        val request = ListProductRequest(size = size, page = page)
+        val responses = productService.list(request)
+
+        return WebResponse(
+            code = 200,
+            status = "OK",
+            data = responses
         )
     }
 }

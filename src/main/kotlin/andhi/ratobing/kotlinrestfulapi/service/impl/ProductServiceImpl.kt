@@ -3,14 +3,18 @@ package andhi.ratobing.kotlinrestfulapi.service.impl
 import andhi.ratobing.kotlinrestfulapi.entity.Product
 import andhi.ratobing.kotlinrestfulapi.error.NotFoundException
 import andhi.ratobing.kotlinrestfulapi.model.CreateProductRequest
+import andhi.ratobing.kotlinrestfulapi.model.ListProductRequest
 import andhi.ratobing.kotlinrestfulapi.model.ProductResponse
 import andhi.ratobing.kotlinrestfulapi.model.UpdateProductRequest
 import andhi.ratobing.kotlinrestfulapi.repository.ProductRepository
 import andhi.ratobing.kotlinrestfulapi.service.ProductService
 import andhi.ratobing.kotlinrestfulapi.validation.ValidationUtil
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.util.*
+import java.util.stream.Collector
+import java.util.stream.Collectors
 
 @Service
 class ProductServiceImpl(
@@ -35,20 +39,23 @@ class ProductServiceImpl(
         return convertProductToProductResponse(product)
     }
 
-    override fun get(id: String): ProductResponse {
-            val product = productRepository.findByIdOrNull(id)
 
-            if (product == null){
-                throw NotFoundException()
-            }else{
+
+
+    override fun get(id: String): ProductResponse {
+            val product = findProductByIdOrThrowNotFound(id)
                 return convertProductToProductResponse(product)
-            }
+
     }
 
-    override fun update(id: String, updateProductRequest: UpdateProductRequest): ProductResponse {
-        val product = productRepository.findByIdOrNull(id) ?: throw NotFoundException()
 
-        product.apply {
+
+
+    override fun update(id: String, updateProductRequest: UpdateProductRequest): ProductResponse {
+        val product = findProductByIdOrThrowNotFound(id)
+        validationUtil.validate(updateProductRequest)
+
+            product.apply {
                 name = updateProductRequest.name!!
                 price = updateProductRequest.price!!
                 quantity = updateProductRequest.quantity!!
@@ -59,6 +66,33 @@ class ProductServiceImpl(
 
     }
 
+
+
+    override fun delete(id: String) {
+        val product = findProductByIdOrThrowNotFound(id)
+        productRepository.delete(product)
+    }
+
+    override fun list(listProductRequest: ListProductRequest): List<ProductResponse> {
+        val page = productRepository.findAll(PageRequest.of(listProductRequest.page, listProductRequest.size))
+        val products = page.get().collect(Collectors.toList())
+
+        return products.map {
+            convertProductToProductResponse(it)
+        }
+    }
+
+
+
+    private fun findProductByIdOrThrowNotFound(id: String): Product{
+        val product = productRepository.findByIdOrNull(id)
+
+        if (product == null) {
+            throw NotFoundException()
+        }else{
+            return product
+        }
+    }
 
     private fun convertProductToProductResponse(product: Product): ProductResponse{
         return ProductResponse(

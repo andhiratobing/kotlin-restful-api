@@ -1,14 +1,16 @@
 Belajar RESTful API dari [Eko Kurniawan Khannedy](https://github.com/ProgrammerZamanNow)
 
+- Database : postgresql
+
 ## API SPEC
 
 ## CREATE PRODUCT
 Request:
--Method : POST
--Endpoint : `api/products`
+- Method : POST
+- Endpoint : `api/products`
 - Header :
-    -Content-Type: application/json
-    -Accept: application/json
+    - Content-Type: application/json
+    - Accept: application/json
 -Body :
 ```json
 {
@@ -35,10 +37,10 @@ Response :
 ```
 
 ## GET PRODUCT
--Method : GET
--Endpoint : `api/products/{id_product}`
+- Method : GET
+- Endpoint : `api/products/{id_product}`
 - Header :
-  -Accept: application/json
+  - Accept: application/json
 
 Response :
 ```json
@@ -59,12 +61,12 @@ Response :
 
 ## UPDATE PRODUCT
 Request:
--Method : PUT/PATCH
--Endpoint : `api/products/{id_product}`
+- Method : PUT/PATCH
+- Endpoint : `api/products/{id_product}`
 - Header :
-  -Content-Type: application/json
-  -Accept: application/json
-  -Body :
+  - Content-Type: application/json
+  - Accept: application/json
+  - Body :
 ```json
 {
   "name": "String",
@@ -90,12 +92,12 @@ Response :
 
 ## LIST PRODUCT
 Request:
--Method : GET
--Endpoint : `api/products`
+- Method : GET
+- Endpoint : `api/products`
 - Header :
   - Accept: application/json
   
--Query Param :
+- Query Param :
   - size : number,
   - page : number
   
@@ -130,10 +132,10 @@ Response :
 
 ## DELETE PRODUCT
 Request:
--Method : DELETE
--Endpoint : `api/products/{id_product}`
+- Method : DELETE
+- Endpoint : `api/products/{id_product}`
 - Header :
-  -Accept: application/json
+  - Accept: application/json
 
 Response :
 ```json
