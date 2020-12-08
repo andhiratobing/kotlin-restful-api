@@ -4,6 +4,7 @@ import andhi.ratobing.kotlinrestfulapi.entity.Product
 import andhi.ratobing.kotlinrestfulapi.error.NotFoundException
 import andhi.ratobing.kotlinrestfulapi.model.CreateProductRequest
 import andhi.ratobing.kotlinrestfulapi.model.ProductResponse
+import andhi.ratobing.kotlinrestfulapi.model.UpdateProductRequest
 import andhi.ratobing.kotlinrestfulapi.repository.ProductRepository
 import andhi.ratobing.kotlinrestfulapi.service.ProductService
 import andhi.ratobing.kotlinrestfulapi.validation.ValidationUtil
@@ -42,6 +43,20 @@ class ProductServiceImpl(
             }else{
                 return convertProductToProductResponse(product)
             }
+    }
+
+    override fun update(id: String, updateProductRequest: UpdateProductRequest): ProductResponse {
+        val product = productRepository.findByIdOrNull(id) ?: throw NotFoundException()
+
+        product.apply {
+                name = updateProductRequest.name!!
+                price = updateProductRequest.price!!
+                quantity = updateProductRequest.quantity!!
+                updatedAt = Date()
+            }
+            productRepository.save(product)
+            return convertProductToProductResponse(product)
+
     }
 
 

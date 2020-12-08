@@ -2,6 +2,7 @@ package andhi.ratobing.kotlinrestfulapi.controller
 
 import andhi.ratobing.kotlinrestfulapi.model.CreateProductRequest
 import andhi.ratobing.kotlinrestfulapi.model.ProductResponse
+import andhi.ratobing.kotlinrestfulapi.model.UpdateProductRequest
 import andhi.ratobing.kotlinrestfulapi.model.WebResponse
 import andhi.ratobing.kotlinrestfulapi.service.ProductService
 import org.springframework.web.bind.annotation.*
@@ -31,6 +32,23 @@ class ProductController(val productService: ProductService) {
 
     fun getProduct(@PathVariable("idProduct") id: String): WebResponse<ProductResponse>{
         val productResponse = productService.get(id)
+        return WebResponse(
+            code = 200,
+            status = "OK",
+            data = productResponse
+        )
+    }
+
+
+    @PutMapping(
+        value = ["/api/products/{idProduct}"],
+        produces = ["application/json"],
+        consumes = ["application/json"]
+    )
+    fun updateProduct(@PathVariable("idProduct")id: String,
+                      @RequestBody updateProductRequest: UpdateProductRequest) : WebResponse<ProductResponse>{
+
+        val productResponse = productService.update(id, updateProductRequest)
         return WebResponse(
             code = 200,
             status = "OK",
