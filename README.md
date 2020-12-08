@@ -1,3 +1,5 @@
+Belajar RESTful API dari [Eko Kurniawan Khannedy](https://github.com/ProgrammerZamanNow)
+
 ## API SPEC
 
 ## CREATE PRODUCT
