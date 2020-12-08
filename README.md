@@ -6,8 +6,14 @@
 ## Authentication
 All API must use this authentication
 Request :
+
 - Header:
-  - X-API-Key: "your secret api key"
+  - X-API-Key: "API Key"
+
+#Authorization:
+- API Key = "X-API-Key"
+- Value = "SECRET"
+  
   
 
 ## API SPECIFICATION
