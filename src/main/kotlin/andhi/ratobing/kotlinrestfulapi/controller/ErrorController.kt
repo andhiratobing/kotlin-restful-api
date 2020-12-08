@@ -1,6 +1,7 @@
 package andhi.ratobing.kotlinrestfulapi.controller
 
 import andhi.ratobing.kotlinrestfulapi.error.NotFoundException
+import andhi.ratobing.kotlinrestfulapi.error.UnAuthorizedException
 import andhi.ratobing.kotlinrestfulapi.model.WebResponse
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -25,5 +26,14 @@ class ErrorController {
             code = 404,
             status = "NOT FOUND",
             data = "Not Found")
+    }
+
+    @ExceptionHandler(value = [UnAuthorizedException::class])
+    fun notFound(unAuthorizedException: UnAuthorizedException): WebResponse<String>{
+
+        return WebResponse(
+            code = 401,
+            status = "UnAuthorized",
+            data = "Please put your X-API-Key")
     }
 }

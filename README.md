@@ -1,8 +1,16 @@
-Belajar RESTful API dari [Eko Kurniawan Khannedy](https://github.com/ProgrammerZamanNow)
+## Belajar RESTful API dari [Eko Kurniawan Khannedy](https://github.com/ProgrammerZamanNow)
 
-- Database : postgresql
+## Database : postgresql
 
-## API SPEC
+
+## Authentication
+All API must use this authentication
+Request :
+- Header:
+  - X-API-Key: "your secret api key"
+  
+
+## API SPECIFICATION
 
 ## CREATE PRODUCT
 Request:
